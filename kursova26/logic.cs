@@ -370,6 +370,10 @@ namespace CourseWork
                     {
                         throw new ArgumentException("Занадто велике значення відстані.");
                     }
+                    if (Math.Abs(matrix[i, j] - matrix[j, i]) > 0.0001) // використання допуску для дробових чисел
+                    {
+                        throw new ArgumentException($"Матриця повинна бути симетричною");
+                    }
                 }
             }
         }

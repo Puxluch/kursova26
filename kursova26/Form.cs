@@ -10,6 +10,16 @@ using System.Windows.Forms;
 
 namespace CourseWork
 {
+    internal static class Program
+    {
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+        }
+    }
     public partial class MainForm : Form // створення головної форми програми
     {
         public readonly Logic _logic; // логіка програми

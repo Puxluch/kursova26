@@ -210,7 +210,7 @@ namespace CourseWork
                     matrixGrid.Visible = false;
                 }
 
-                infoLabel.Text = "Випадковий граф успішно створено.";
+                infoLabel.Text = "Випадковий граф успішно створено";
             }
             catch (Exception ex) // показ помилки у разі невдачі
             {
@@ -232,7 +232,7 @@ namespace CourseWork
                 matrixGrid.Visible = false;
                 graphBox.Image = null;
 
-                infoLabel.Text = "Для більше ніж 20 вершин доступна лише випадкова генерація.";
+                infoLabel.Text = "Для більше ніж 20 вершин доступна лише випадкова генерація";
             }
         }
 
@@ -246,7 +246,7 @@ namespace CourseWork
                 matrixGrid.Visible = false;
                 graphBox.Image = null;
 
-                infoLabel.Text = "Для більше ніж 20 вершин ручне введення недоступне.";
+                infoLabel.Text = "Для більше ніж 20 вершин ручне введення недоступне";
                 return;
             }
 
@@ -267,7 +267,7 @@ namespace CourseWork
                 else // інакше використовуємо згенеровану матрицю
                 {
                     if (generatedMatrix == null)
-                        throw new Exception("Спочатку згенеруйте випадкову матрицю.");
+                        throw new Exception("Спочатку згенеруйте випадкову матрицю");
 
                     matrix = generatedMatrix;
                 }
@@ -292,7 +292,7 @@ namespace CourseWork
                 {
                     graphBox.Image = null;
                 }
-                infoLabel.Text = "Розрахунок успішно завершено.";
+                infoLabel.Text = "Розрахунок успішно завершено";
             }
             catch (Exception ex) // показ помилки у разі невдачі
             {
@@ -306,7 +306,7 @@ namespace CourseWork
             {
                 if (string.IsNullOrWhiteSpace(resultBox.Text)) // перевірка наявності результатів для збереження
                 {
-                    throw new Exception("Немає результатів для збереження.");
+                    throw new Exception("Немає результатів для збереження");
                 }
 
                 using (SaveFileDialog dialog = new SaveFileDialog()) // діалог для вибору місця збереження файлу

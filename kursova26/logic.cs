@@ -54,7 +54,7 @@ namespace CourseWork
                     }
                     else if (j > i)
                     {
-                        double value = random.Next(3, 1000); // генерація випадкової ваги для ребра між містами i та j
+                        double value = random.Next(1, 1000); // генерація випадкової ваги для ребра між містами i та j
                         matrix[i, j] = value;
                         matrix[j, i] = value;
                     }
@@ -272,42 +272,45 @@ namespace CourseWork
 
             // Параметри для алгоритму відпалу
             double temp = 10000.0; // початкова температура
-            double alpha = 0.999; // коефіцієнт охолодження
+            double alpha = 0.99; // коефіцієнт охолодження
             double tMin = 0.0001; // мінімальна температура для зупинки алгоритму
             int iter = 0; // лічильник ітерацій
-
+            int attemptsPerTemp = size * 5;
             while (temp > tMin) //поки температура не опуститься до мінімального рівня, продовжувати пошук кращого рішення
             {
-                iter++; // + ітерація
-                List<int> candidateRoute = new List<int>(currentRoute); // створення кандидата на основі поточного маршруту
-
-                // вибір двох випадкових індексів для обміну в маршруті
-                int i = random.Next(1, size); 
-                int j = random.Next(1, size);
-
-                if (i == j) // пропустити ітерацію у разі вибору однакових індексів
+                for (int k = 0; k < attemptsPerTemp; k++)
                 {
-                    continue;
-                }
+                    iter++; // + ітерація
+                    List<int> candidateRoute = new List<int>(currentRoute); // створення кандидата на основі поточного маршруту
 
-                (candidateRoute[i], candidateRoute[j]) = (candidateRoute[j], candidateRoute[i]); // обмін елементів для створення нового кандидата
+                    // вибір двох випадкових індексів для обміну в маршруті
+                    int i = random.Next(1, size);
+                    int j = random.Next(1, size);
 
-                double candidateWeight = CalculateWeight(matrix, candidateRoute); // обчислення ваги кандидата
-                double delta = candidateWeight - currentWeight; // різниця між вагою кандидата та поточного маршруту
-
-                if (delta < 0 || random.NextDouble() < Math.Exp(-delta / temp)) //  якщо виконуються складні умови, то оновити
-                {
-                    currentRoute = candidateRoute;
-                    currentWeight = candidateWeight; 
-
-                    if (currentWeight < bestWeight) // оновити найкращий маршрут та вагу в разі покращення результату
+                    if (i == j) // пропустити ітерацію у разі вибору однакових індексів
                     {
-                        bestWeight = currentWeight; 
-                        bestRoute = new List<int>(currentRoute); 
+                        continue;
+                    }
+
+                    (candidateRoute[i], candidateRoute[j]) = (candidateRoute[j], candidateRoute[i]); // обмін елементів для створення нового кандидата
+
+                    double candidateWeight = CalculateWeight(matrix, candidateRoute); // обчислення ваги кандидата
+                    double delta = candidateWeight - currentWeight; // різниця між вагою кандидата та поточного маршруту
+
+                    if (delta < 0 || random.NextDouble() < Math.Exp(-delta / temp)) //  якщо виконуються складні умови, то оновити
+                    {
+                        currentRoute = candidateRoute;
+                        currentWeight = candidateWeight;
+
+                        if (currentWeight < bestWeight) // оновити найкращий маршрут та вагу в разі покращення результату
+                        {
+                            bestWeight = currentWeight;
+                            bestRoute = new List<int>(currentRoute);
+                        }
                     }
                 }
 
-                temp *= alpha; // охолодження температури
+                    temp *= alpha; // охолодження температури
             }
 
             return new Result 
@@ -346,7 +349,7 @@ namespace CourseWork
             }
             if (rows < MinVertex || rows > MaxGeneratedVertex) // кількість вершин має бути в межах допустимого, інакше - помилка
             {
-                throw new ArgumentException("Некоректна кількість міст");
+                throw new ArgumentException("Некоректна кількість вершин");
             }
 
             for (int i = 0; i < rows; i++) // перебір матриці
@@ -364,11 +367,11 @@ namespace CourseWork
                     }
                     if (i != j && matrix[i, j] < MinWeight) // вага має бути більшою за нуль, інакше - помилка
                     {
-                        throw new ArgumentException("Відстань між містами повинна бути більшою за нуль.");
+                        throw new ArgumentException("Відстань між вершинами повинна бути більшою за нуль.");
                     }
                     if (matrix[i, j] > MaxWeight) // вага не повинна бути не більше за верхній діапазон, інакше - помилка
                     {
-                        throw new ArgumentException("Занадто велике значення відстані.");
+                        throw new ArgumentException("Занадто велике значення ваги.");
                     }
                     if (Math.Abs(matrix[i, j] - matrix[j, i]) > 0.0001) // використання допуску для дробових чисел
                     {
